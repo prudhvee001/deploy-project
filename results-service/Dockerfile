@@ -1,30 +1,32 @@
-# Use Maven Temurin image to build the Java application
-FROM maven:3.8.4-temurin-17 AS builder
+# Stage 1: Build Stage
+FROM maven:3.8.4-temurin-17 as builder
 
-# Set the working directory
+# Set the working directory to /app
 WORKDIR /app
 
-# Copy the pom.xml and the source code to the container
-COPY pom.xml ./
-COPY src ./src
+# Copy pom.xml and install dependencies (to leverage caching)
+COPY pom.xml .
 
-# Install dependencies and build the application
-RUN mvn clean install -DskipTests
+# Download dependencies to go offline
+RUN mvn dependency:go-offline
 
-# Debug: List files in the target directory
-RUN ls -l /app/target
+# Copy the rest of the source code
+COPY src /app/src
 
-# Use JDK Temurin image to run the Spring Boot application
+# Build the JAR file
+RUN mvn clean package -DskipTests
+
+# Stage 2: Runtime Stage
 FROM eclipse-temurin:17-jdk-slim
 
-# Set the working directory
+# Set the working directory to /app
 WORKDIR /app
 
-# Copy the built JAR file from the builder stage
+# Copy the JAR file from the builder stage
 COPY --from=builder /app/target/results-service.jar /app/results-service.jar
 
-# Expose the port the app runs on
+# Expose the port your app is running on (default for Spring Boot is 8080)
 EXPOSE 8080
 
-# Run the application
-ENTRYPOINT ["java", "-jar", "/app/results-service.jar"]
+# Command to run the JAR file
+CMD ["java", "-jar", "/app/results-service.jar"]

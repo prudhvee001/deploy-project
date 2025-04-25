@@ -1,12 +1,19 @@
 {
     "name": "user-service",
     "version": "1.0.0",
-    "main": "user-service.js",
+    "description": "User service for the student portal",
+    "main": "index.js",
     "scripts": {
-      "start": "node user-service.js"
+      "start": "node app.js"
     },
     "dependencies": {
       "express": "^4.17.1"
-    }
+    },
+    "devDependencies": {},
+    "engines": {
+      "node": "16.x"
+    },
+    "author": "",
+    "license": "ISC"
   }
   
