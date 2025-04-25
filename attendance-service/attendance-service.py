@@ -1,10 +1,11 @@
 from flask import Flask, jsonify
+from werkzeug.urls import url_quote  # Ensure the correct version of Werkzeug is installed
 
 app = Flask(__name__)
 
-@app.route('/attendance')
-def attendance():
-    return jsonify({"date": "2025-04-25", "status": "Present"})
+@app.route('/attendance', methods=['GET'])
+def get_attendance():
+    return jsonify({"attendance": "success"})
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=3002)
+    app.run(debug=True, host='0.0.0.0', port=5000)

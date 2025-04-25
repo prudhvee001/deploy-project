@@ -1,25 +1,27 @@
-version: '3.8'
-
+version: '3'
 services:
   user-service:
     build:
       context: ./user-service
     ports:
       - "3001:3001"
+    networks:
+      - app-network
 
   attendance-service:
     build:
       context: ./attendance-service
-    ports:
-      - "3002:3002"
+    networks:
+      - app-network
 
   results-service:
     build:
       context: ./results-service
-    ports:
-      - "3003:3003"
+    networks:
+      - app-network
 
   nginx:
+    image: nginx:alpine
     build:
       context: ./nginx
     ports:
@@ -28,4 +30,9 @@ services:
       - user-service
       - attendance-service
       - results-service
+    networks:
+      - app-network
 
+networks:
+  app-network:
+    driver: bridge
