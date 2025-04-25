@@ -1,32 +1,29 @@
-# Stage 1: Build Stage
-FROM maven:3.8.4-temurin-17 as builder
+# Stage 1: Build stage using Maven and Eclipse Temurin JDK 17
+FROM maven:3.8.4-eclipse-temurin-17 AS builder
 
-# Set the working directory to /app
 WORKDIR /app
 
-# Copy pom.xml and install dependencies (to leverage caching)
+# Copy pom.xml and dependencies to the container
 COPY pom.xml .
 
-# Download dependencies to go offline
+# Download dependencies in offline mode
 RUN mvn dependency:go-offline
 
-# Copy the rest of the source code
+# Copy all the source files
 COPY src /app/src
 
-# Build the JAR file
+# Package the application
 RUN mvn clean package -DskipTests
 
-# Stage 2: Runtime Stage
-FROM eclipse-temurin:17-jdk-slim
+# Stage 2: Runtime stage using Eclipse Temurin JDK 17 (lightweight version)
+FROM eclipse-temurin:17-jdk
 
-# Set the working directory to /app
 WORKDIR /app
 
 # Copy the JAR file from the builder stage
 COPY --from=builder /app/target/results-service.jar /app/results-service.jar
 
-# Expose the port your app is running on (default for Spring Boot is 8080)
 EXPOSE 8080
 
-# Command to run the JAR file
-CMD ["java", "-jar", "/app/results-service.jar"]
+# Run the application
+ENTRYPOINT ["java", "-jar", "/app/results-service.jar"]
