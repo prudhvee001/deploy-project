@@ -1,0 +1,12 @@
+{
+    "name": "user-service",
+    "version": "1.0.0",
+    "main": "user-service.js",
+    "scripts": {
+      "start": "node user-service.js"
+    },
+    "dependencies": {
+      "express": "^4.17.1"
+    }
+  }
+  
