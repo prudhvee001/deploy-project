@@ -11,6 +11,9 @@ COPY src ./src
 # Install dependencies and build the application
 RUN mvn clean install -DskipTests
 
+# Add a debug step to verify the location of the JAR file
+RUN ls -l /app/target
+
 # Use an OpenJDK image to run the Spring Boot application
 FROM openjdk:17-jdk-slim
 
