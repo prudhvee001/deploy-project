@@ -1,4 +1,8 @@
+# Use OpenJDK as the base image
 FROM openjdk:11-jdk-slim AS builder
+
+# Install Maven
+RUN apt-get update && apt-get install -y maven
 
 # Set the working directory
 WORKDIR /app
@@ -6,6 +10,7 @@ WORKDIR /app
 # Copy the pom.xml file and install dependencies
 COPY pom.xml .
 
+# Install dependencies (offline mode)
 RUN mvn dependency:go-offline
 
 # Copy the rest of the source code
