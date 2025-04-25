@@ -17,7 +17,7 @@ services:
     build:
       context: ./results-service
     ports:
-      - "3003:8080"
+      - "3003:3003"
 
   nginx:
     build:
