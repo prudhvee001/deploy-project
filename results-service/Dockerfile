@@ -1,14 +1,29 @@
-# Dockerfile for results-service
-FROM openjdk:11-jre-slim
+FROM openjdk:11-jdk-slim AS builder
 
 # Set the working directory
 WORKDIR /app
 
-# Copy the jar file into the container
-COPY target/results-service.jar /app/results-service.jar
+# Copy the pom.xml file and install dependencies
+COPY pom.xml .
 
-# Expose the application port
+RUN mvn dependency:go-offline
+
+# Copy the rest of the source code
+COPY . .
+
+# Build the application (will generate the JAR file)
+RUN mvn clean package -DskipTests
+
+# Use a new image to run the application
+FROM openjdk:11-jre-slim
+
+WORKDIR /app
+
+# Copy the generated JAR file from the builder image
+COPY --from=builder /app/target/results-service.jar /app/results-service.jar
+
+# Expose the port the application will run on
 EXPOSE 8080
 
-# Run the jar file
-CMD ["java", "-jar", "results-service.jar"]
+# Command to run the application
+ENTRYPOINT ["java", "-jar", "/app/results-service.jar"]

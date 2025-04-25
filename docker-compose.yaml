@@ -1,38 +1,37 @@
 version: '3'
 services:
   user-service:
-    build:
-      context: ./user-service
+    build: ./user-service
     ports:
       - "3001:3001"
     networks:
-      - app-network
+      - backend
 
   attendance-service:
-    build:
-      context: ./attendance-service
+    build: ./attendance-service
     networks:
-      - app-network
+      - backend
+    restart: always
 
   results-service:
-    build:
-      context: ./results-service
+    build: ./results-service
     networks:
-      - app-network
+      - backend
+    restart: always
 
   nginx:
     image: nginx:alpine
-    build:
-      context: ./nginx
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
     ports:
       - "80:80"
+    networks:
+      - backend
     depends_on:
       - user-service
       - attendance-service
       - results-service
-    networks:
-      - app-network
 
 networks:
-  app-network:
+  backend:
     driver: bridge

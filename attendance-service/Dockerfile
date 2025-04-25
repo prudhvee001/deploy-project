@@ -1,14 +1,17 @@
+# Use a Python 3.9 image
 FROM python:3.9-slim
 
 # Set the working directory
 WORKDIR /app
 
-# Copy the requirements file and install dependencies
-COPY requirements.txt /app/requirements.txt
+# Copy the requirements file
+COPY requirements.txt .
+
+# Install the dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the application code
-COPY . /app
+# Copy the application files
+COPY . .
 
 # Expose the application port
 EXPOSE 5000
