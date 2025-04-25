@@ -1,30 +1,30 @@
-# Stage 1: Build the application using Maven
+# Use Maven image to build the Java application
 FROM maven:3.8.4-openjdk-17-slim as builder
 
 WORKDIR /app
 
-# Copy the pom.xml and dependencies to the container
+# Copy the pom.xml file to the container
 COPY pom.xml .
 
-# Download dependencies (this speeds up the build if we don't change dependencies)
+# Download the dependencies
 RUN mvn dependency:go-offline
 
-# Copy the rest of the source code
+# Copy the source code to the container
 COPY src /app/src
 
 # Build the application
 RUN mvn clean package -DskipTests
 
-# Stage 2: Run the application
-FROM eclipse-temurin:17-jdk-slim
+# Use a smaller openjdk image to run the application
+FROM openjdk:17-slim
 
 WORKDIR /app
 
-# Copy the built jar file from the builder stage
+# Copy the packaged jar from the builder stage
 COPY --from=builder /app/target/results-service.jar /app/results-service.jar
 
-# Expose the application port
+# Expose the application's port
 EXPOSE 8080
 
-# Run the jar file
+# Command to run the application
 ENTRYPOINT ["java", "-jar", "/app/results-service.jar"]

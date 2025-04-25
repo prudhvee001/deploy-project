@@ -11,13 +11,12 @@
 
     <name>results-service</name>
     <description>Results Service</description>
-    
+
     <properties>
         <java.version>17</java.version>
     </properties>
 
     <dependencies>
-        <!-- Spring Boot -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -59,9 +58,4 @@
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>2.5.4</version> <!-- specify version -->
-            </plugin>
-        </plugins>
-    </build>
-</project>
+                <artifactId>
