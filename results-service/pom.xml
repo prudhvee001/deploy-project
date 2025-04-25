@@ -7,51 +7,75 @@
     <groupId>com.example</groupId>
     <artifactId>results-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>Results Service</name>
-    <description>Results Service for the student portal</description>
+    <packaging>jar</packaging>
 
-    <properties>
-        <java.version>11</java.version>
-    </properties>
+    <name>results-service</name>
+    <description>Results service for the student portal</description>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.5.5</version> <!-- Specify the Spring Boot version -->
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
 
     <dependencies>
+        <!-- Spring Boot Web -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <version>2.5.5</version> <!-- Added version -->
         </dependency>
+
+        <!-- Spring Boot Data JPA -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
+            <version>2.5.5</version> <!-- Added version -->
         </dependency>
+
+        <!-- Spring Boot Logging -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-logging</artifactId>
+            <version>2.5.5</version> <!-- Added version -->
         </dependency>
+
+        <!-- Spring Boot Thymeleaf -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
+            <version>2.5.5</version> <!-- Added version -->
         </dependency>
+
+        <!-- Spring Boot Actuator -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
+            <version>2.5.5</version> <!-- Added version -->
         </dependency>
+
+        <!-- Spring Boot DevTools -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
-            <scope>runtime</scope>
+            <version>2.5.5</version> <!-- Added version -->
         </dependency>
+
+        <!-- Spring Boot Data REST -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-rest</artifactId>
+            <version>2.5.5</version> <!-- Added version -->
         </dependency>
     </dependencies>
 
     <build>
         <plugins>
+            <!-- Spring Boot Maven Plugin -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>2.5.6</version>
             </plugin>
         </plugins>
     </build>

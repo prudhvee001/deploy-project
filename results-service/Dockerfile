@@ -1,34 +1,27 @@
-# Use OpenJDK as the base image
-FROM openjdk:11-jdk-slim AS builder
-
-# Install Maven
-RUN apt-get update && apt-get install -y maven
+# Use Maven image to build the Java application
+FROM maven:3.8.4-openjdk-17-slim AS builder
 
 # Set the working directory
 WORKDIR /app
 
-# Copy the pom.xml file and install dependencies
-COPY pom.xml .
+# Copy the pom.xml and the source code to the container
+COPY pom.xml ./
+COPY src ./src
 
-# Install dependencies (offline mode)
-RUN mvn dependency:go-offline
+# Install dependencies and build the application
+RUN mvn clean install -DskipTests
 
-# Copy the rest of the source code
-COPY . .
+# Use an OpenJDK image to run the Spring Boot application
+FROM openjdk:17-jdk-slim
 
-# Build the application (will generate the JAR file)
-RUN mvn clean package -DskipTests
-
-# Use a new image to run the application
-FROM openjdk:11-jre-slim
-
+# Set the working directory
 WORKDIR /app
 
-# Copy the generated JAR file from the builder image
+# Copy the built JAR file from the builder stage
 COPY --from=builder /app/target/results-service.jar /app/results-service.jar
 
-# Expose the port the application will run on
+# Expose the port the app runs on
 EXPOSE 8080
 
-# Command to run the application
+# Run the application
 ENTRYPOINT ["java", "-jar", "/app/results-service.jar"]
