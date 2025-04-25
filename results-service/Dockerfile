@@ -1,5 +1,5 @@
-# Use Maven image to build the Java application
-FROM maven:3.8.4-openjdk-17-slim AS builder
+# Use Maven Temurin image to build the Java application
+FROM maven:3.8.4-temurin-17 AS builder
 
 # Set the working directory
 WORKDIR /app
@@ -11,11 +11,11 @@ COPY src ./src
 # Install dependencies and build the application
 RUN mvn clean install -DskipTests
 
-# Add a debug step to verify the location of the JAR file
+# Debug: List files in the target directory
 RUN ls -l /app/target
 
-# Use an OpenJDK image to run the Spring Boot application
-FROM openjdk:17-jdk-slim
+# Use JDK Temurin image to run the Spring Boot application
+FROM eclipse-temurin:17-jdk-slim
 
 # Set the working directory
 WORKDIR /app
